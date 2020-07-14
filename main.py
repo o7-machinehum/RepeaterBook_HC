@@ -17,7 +17,6 @@ for state in LOCATIONS:
     data = f.read()
     
     df = pd.DataFrame(list(pd.read_json(data)['results']))
-    df = df.set_index('Callsign')
     cols = list(df.columns)
     
     del_cols = list()
@@ -34,7 +33,8 @@ for state in LOCATIONS:
     big_df = pd.concat([big_df, df])
 
 header = open('template.tex', 'r').read()
-output = '{} \n {} \n'.format(header, big_df.to_latex(index=False)) + '\end{document}'
+output = '{} \n {} \n'.format(header, big_df.to_latex(longtable = True, index=False)) + '\end{document}'
 
 open('output.tex', 'w').write(output)
 os.system('pdflatex output.tex')      # Compile the document
+os.system('open output.pdf')      # Compile the document
